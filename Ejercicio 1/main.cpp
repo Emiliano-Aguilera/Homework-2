@@ -5,15 +5,12 @@
 
 using namespace std;
 
-void printOptions();
 int getInput();
-void getInputTime(Time moment);
 
 int main(){
     int option;
     Time moment;
     do{
-        printOptions();
         try {
             cout << "Opcion: ";
             option = getInput();
@@ -27,24 +24,6 @@ int main(){
         }
     } while (option > 0 && option < 9);
 
-}
-
-void printOptions(){
-    cout << "Seleccione una accion:" << endl;
-    cout << "0  - Inicializar sin parametros.\n"
-         << "1  - Inicializar con Horas.\n"
-         << "2  - Inicializar con Horas y Minutos.\n"
-         << "3  - Inicializar con Horas, Minutos y Segundos.\n"
-         << "4  - Inicializar con Horas, Minutos, Segundos y Meridiem\n"
-         << "5  - Cambiar Horas\n"
-         << "6  - Cambiar Minutos\n"
-         << "7  - Cambiar Segundos\n"
-         << "8  - Cambiar Meridiem\n"
-         << "9  - Ver Horas\n"
-         << "10 - Ver Minutos\n"
-         << "11 - Ver Segundos\n"
-         << "12 - Ver Meridiem\n"
-         << "Cualquier otro numero para salir.\n";    
 }
 
 int getInput(){
@@ -63,20 +42,6 @@ int getInput(){
     }
     
     return intInput;
-}
-
-void getInputTime(Time moment) {
-    cout << "Horas: ";
-    int horas = getInput();
-
-    cout << "Minutos: ";
-    int minutos = getInput();
-
-    cout << "Segundos: ";
-    int segundos = getInput();
-
-    cout << "a.m.(0) p.m.(1): ";
-    int am = getInput();
 }
 
 
