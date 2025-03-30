@@ -7,28 +7,20 @@ using namespace std;
 
 
 int main(){
-    Curso c{"Mate1"};
-    Curso c2{"Mate2"};
-    Curso c3{"Mate3"};
+    std::shared_ptr<Curso> c = make_shared<Curso>("Matematica");
 
-    Estudiante es("z", "A", 1175718);
-    Estudiante es2("a", "B", 1175718);
-    Estudiante es3("m", "C", 1175718);
+    std::shared_ptr<Estudiante> es = make_shared<Estudiante>("Emiliano", "Aguilera", 1175718);
+    std::shared_ptr<Estudiante> es2 = make_shared<Estudiante>("Tomas", "Perez", 1175718);
+    std::shared_ptr<Estudiante> es3 = make_shared<Estudiante>("Bautista", "Ceballos", 1175718);
 
-    c.inscribirEstudiante(&es2, 8);
-    c.inscribirEstudiante(&es3, 5);
+    c->inscribir_estudiante(es, 9);
+    c->inscribir_estudiante(es2, 10);
+    c->inscribir_estudiante(es3, 8);
 
-    c2.inscribirEstudiante(&es3, 10);
-    c2.inscribirEstudiante(&es, 10);
+    es->mostrar_cursos();
+    es2->mostrar_cursos();
+    es3->mostrar_cursos();
 
-    c3.inscribirEstudiante(&es, 9); 
-    c3.inscribirEstudiante(&es2, 4);
-
-    es.mostrarCursos();
-    es2.mostrarCursos();
-    es3.mostrarCursos();
-
-    c.mostrarEstudiantes();
-    c2.mostrarEstudiantes();
-    c3.mostrarEstudiantes();
+    c->mostrar_estudiantes();
+    std::cout<<std::endl;
 }

@@ -2,8 +2,9 @@
 
 #include <string>
 #include <vector>
-#include <memory>
-#include <iostream>
+#include <iostream> // cout cin
+#include <iomanip> // setw
+#include <memory> // weak_ptr
 
 // Forward declaration
 class Curso;
@@ -11,29 +12,41 @@ class Curso;
 class Estudiante{
     private:
         // Atributos
+        // Nombre del estudiante
         std::string e_nombre;
+        // Apellido del estudiante
         std::string e_apellido;
+        // Legajo del estudiante, no se checkea que sea unico.
         int e_legajo;
-
-        std::vector<std::pair<Curso*, int>> e_notas;
+        // Vector que contiene pairs que constan de un shared_ptr(curso) y su nota
+        std::vector<std::pair<std::weak_ptr<Curso>, int>> e_notas;
     public:
-        //Constructor
+        //Constructor, toma un nombre un apellido y un legajo.
         Estudiante(std::string nombre, std::string apellido, int legajo);
 
         // Sobrecarga de operadores
+        // Sobrecarga operador <, compara los nombres de los estudiantes y devuelve true si el de la derecha es mayor
         bool operator<(const Estudiante& otroEstudiante) const;
+        // Sobrecarga operador <<, ingresa el nombre y apellido del estudiante a un ostream, para poder usarlo con cout
         friend std::ostream& operator<<(std::ostream& os, const Estudiante& estudiante);
 
         // Metodos publicos
-        int getLegajo() const;
-        float getPromedio() const;
-        void agregarCurso(Curso* curso, int nota);
-        void eliminarCurso(Curso* curso);
+        // Devuelve el legajo
+        int get_legajo() const;
+        // Calcula el promedio de notas, si no hay cursos, devuelve -1.0
+        float get_promedio() const;
+        // Agrega un curso, usa un puntero a curso para poder usar std::pair
+        void agregar_curso(std::weak_ptr<Curso> curso, int nota);
+        // Elimina un curso, usa un puntero a curso.
+        void eliminar_curso(std::weak_ptr<Curso> curso);
         
-        std::string getNombre() const;
-        std::string getApellido() const;
-        std::string getNombreCompleto() const;
+        // Devuelve solo el nombre
+        std::string get_nombre() const;
+        // Devuelve solo el apellido
+        std::string get_apellido() const;
+        // Concatena nombre y apellido, los devuelve como una sola string
+        std::string get_nombre_completo() const;
 
         // helper functions BORRAR
-        void mostrarCursos() const;
+        void mostrar_cursos() const;
 };

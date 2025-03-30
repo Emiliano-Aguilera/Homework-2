@@ -5,55 +5,65 @@ Curso::Curso(std::string nombre) {
     c_nombre = nombre;
 }
 
-void Curso::inscribirEstudiante(Estudiante* estudiante, int nota){
-    if (this->cursoCompleto()){
-        throw std::runtime_error("Curso completo, no se puede inscribir.");
+
+void Curso::inscribir_estudiante(std::shared_ptr<Estudiante> estudiante, int nota){
+    if (this->curso_completo()){
+        std::cerr << "Curso completo, no se pueden añadir estudiantes" << std::endl;
     }
     else {
         c_estudiantes.push_back(estudiante);
-        estudiante->agregarCurso(this, nota);
+        estudiante->agregar_curso(shared_from_this(), nota);
     }
 }
 
-void Curso::desinscribirEstudiante(int legajo){
+void Curso::desinscribir_estudiante(int legajo){
     for (auto e = c_estudiantes.begin(); e != c_estudiantes.end(); e++) {
-        if ((*e)->getLegajo() == legajo){
+        if ((*e)->get_legajo() == legajo){
             c_estudiantes.erase(e);
-            (*e)->eliminarCurso(this);
+            (*e)->eliminar_curso(shared_from_this());
             break;
         }
     }
 }
 
-bool Curso::estaInscripto(int legajo) const{
+
+bool Curso::esta_inscripto(int legajo) const{
     for (auto e = c_estudiantes.begin(); e != c_estudiantes.end(); e++) {
-        if ((*e)->getLegajo() == legajo){
+        if ((*e)->get_legajo() == legajo){
             return true;
         }
     }
     return false;
 }
 
-bool Curso::cursoCompleto() const{
+
+bool Curso::curso_completo() const{
     return (c_estudiantes.size() == 20);
 }
 
-std::string Curso::getNombre() const {
+
+std::string Curso::get_nombre() const {
     return c_nombre;
 }
 
-void Curso::mostrarEstudiantes() const{
-    // Deberia hacer una copia? para poder hacer que mostrar estudiantes sea const?
-    std::vector<Estudiante> estudiantes;
+std::vector<std::shared_ptr<Estudiante>> Curso::get_estudiantes(){
+    return c_estudiantes;
+}
 
-    for (const auto& e : c_estudiantes) {
-        estudiantes.push_back(*e);
-    }
+void Curso::set_nombre(std::string nuevo_nombre){
+    c_nombre = nuevo_nombre;
+}
 
-    std::sort(estudiantes.begin(), estudiantes.end());
+
+void Curso::mostrar_estudiantes(){
+    // Ordena el vector de estudiantes. Usa una funcion lambda como comparador que -
+    // dereferencia el iterador y el shared_ptr<Estudiante> y usa el operador sobrecargado < de estudiante.
+    std::sort(c_estudiantes.begin(), c_estudiantes.end(), 
+        [](auto a, auto b)->bool{return (*a.get() < *b.get());});
 
     std::cout << "Estudiantes de " << this->c_nombre << ":" << std::endl;
-    for (auto e : estudiantes){
-        std::cout << e << std::endl;
+
+    for (auto e : c_estudiantes){
+        std::cout << (*e.get()) << std::endl;
     }
 }
