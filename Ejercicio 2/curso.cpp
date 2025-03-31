@@ -4,7 +4,21 @@
 Curso::Curso(std::string nombre) {
     c_nombre = nombre;
 }
+// Explicacion: El copy constructor en este caso tiene que copiar los estudiantes inscriptos, y luego inscribir todos los estudiantes a este nuevo curso, 
+// No podemos simplemente copiar el vector de estudiantes porque los estudiantes no tendrian a este nuevo curso dentro de ellos. Ademas de que si desinscribimos
+// a un estudiante de el curso original, tambien se eliminaria de el vector de este nuevo curso. Por lo que debemos duplicar el vector c_estudiantes e iterar
+// sobre todos los estudiantes para añadir el nuevo curso a cada estudiante. Manteniendo que todos apunten al mismo objeto y que los cursos apuntan a los mismos
+// estudiantes.
+Curso::Curso(Curso& curso_a_copiar, std::string nombre) : std::enable_shared_from_this<Curso>() {
+    c_nombre = nombre;
+    c_estudiantes = std::vector<std::shared_ptr<Estudiante>>(curso_a_copiar.c_estudiantes);
+}
 
+void Curso::inscribir_estudiantes_copy(){
+    for(auto e : c_estudiantes){
+        e->agregar_curso(weak_from_this(), -1);
+    }
+}
 
 void Curso::inscribir_estudiante(std::shared_ptr<Estudiante> estudiante, int nota){
     if (this->curso_completo()){
@@ -12,7 +26,7 @@ void Curso::inscribir_estudiante(std::shared_ptr<Estudiante> estudiante, int not
     }
     else {
         c_estudiantes.push_back(estudiante);
-        estudiante->agregar_curso(shared_from_this(), nota);
+        estudiante->agregar_curso(weak_from_this(), nota);
     }
 }
 

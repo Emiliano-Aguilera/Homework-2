@@ -2,35 +2,30 @@
 
 #include <string>
 #include <vector>
-#include <iostream> // cout cin
-#include <iomanip> // setw
-#include <memory> // weak_ptr
+#include <iostream>
+#include <iomanip> // std::setprecision
+#include <memory>
 
-// Forward declaration
+
 class Curso;
 
 class Estudiante{
     private:
-        // Atributos
-        // Nombre del estudiante
         std::string e_nombre;
-        // Apellido del estudiante
         std::string e_apellido;
         // Legajo del estudiante, no se checkea que sea unico.
         int e_legajo;
-        // Vector que contiene pairs que constan de un shared_ptr(curso) y su nota
+        // Vector que contiene pairs que constan de un weak_ptr(curso) y su nota
         std::vector<std::pair<std::weak_ptr<Curso>, int>> e_notas;
     public:
         //Constructor, toma un nombre un apellido y un legajo.
         Estudiante(std::string nombre, std::string apellido, int legajo);
 
-        // Sobrecarga de operadores
         // Sobrecarga operador <, compara los nombres de los estudiantes y devuelve true si el de la derecha es mayor
         bool operator<(const Estudiante& otroEstudiante) const;
         // Sobrecarga operador <<, ingresa el nombre y apellido del estudiante a un ostream, para poder usarlo con cout
         friend std::ostream& operator<<(std::ostream& os, const Estudiante& estudiante);
 
-        // Metodos publicos
         // Devuelve el legajo
         int get_legajo() const;
         // Calcula el promedio de notas, si no hay cursos, devuelve -1.0

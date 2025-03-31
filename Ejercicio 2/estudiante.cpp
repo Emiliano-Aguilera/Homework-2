@@ -15,7 +15,7 @@ bool Estudiante::operator<(const Estudiante& otroEstudiante) const{
     std::string nombre1 = this->get_nombre();
     std::string nombre2 = otroEstudiante.get_nombre();
     
-    return nombre1.at(0) < nombre2.at(0);
+    return nombre1 < nombre2;
 }
 
 std::ostream& operator<<(std::ostream& os, const Estudiante& estudiante){

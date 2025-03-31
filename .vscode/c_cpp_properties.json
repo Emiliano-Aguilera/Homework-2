@@ -3,7 +3,9 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "${workspaceFolder}",
+                "/home/emiag/Homework 2/helpers/"
             ],
             "defines": [],
             "cStandard": "c17",
