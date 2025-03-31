@@ -4,7 +4,7 @@
 std::string meridiem_strings[2] = {"a.m.", "p.m."};
 
 // Permite inicializar con valores mayores a 12, 60, 60, respectivamente. 
-// Cuando los valores se pasan, estos suman su equivalente a la unidad que le sigue:
+// Cuando los valores se pasan del maximo, estos suman su equivalente a la unidad que le sigue, por ejemplo:
 // segundos = 123 suma 2 minutos y deja segundos en 3, lo mismo con minutos.
 // En el caso de Horas, depende del meridiem, si meridiem = AM y horas = 13,
 // entonces meridiem pasa a PM y horas a 1. Lo mismo si fuese PM, pasaria a AM.

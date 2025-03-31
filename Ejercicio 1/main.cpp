@@ -15,19 +15,23 @@ void inputMostrarMomento(Time* momento);
 
 // Permite tomar por consola el input de usuario, maneja errores de cin, y solo devuelve un u_int, por lo que no permite negativos
 u_int getUint();
+// Sobrecarga que admite un tope, para poder verificar que el valor esta dentro de un rango
 u_int getUint(u_int tope);
-
-MERIDIEM getMeridiem();
-
-MERIDIEM castMeridiem(u_int meridiem);
+// Funcion que ignora el maximo de linea de input o hasta un \n permite manejar entradas validas pero que se hacen en un solo cin, se usa en getUint y getMeridiem 
 void ignoreLine();
+
+// Funcion que solo se encarga de tomar por consola el meridiem, valida que sea AM o PM y los errores de cin
+MERIDIEM getMeridiem();
+// Funcion auxiliar, usada por getMeridiem 
+MERIDIEM castMeridiem(u_int meridiem);
+
 
 int main(){
     u_int accion;
     Time momento{};
 
     cout << "Bienvenido al ejercicio 1 del Homework 2\n Al momento de inicializar los valores ingresados se redondearan";
-    cout << "hacia su unidad superior, por lo que los unicos valores invalidos son negativos o no numericos." << endl; 
+    cout << "hacia su unidad superior, por lo que los unicos valores invalidos son negativos o no numericos." << endl << endl; 
     
     do{
         // Mostrar mensaje de menu
@@ -70,7 +74,6 @@ Time inputInicializarMomento(){
     cout << "Cualquier otro numero: Se inicializa todo en 0" << endl;
 
     cout << "Eleccion: ";
-
 
     u_int eleccion = getUint();
     MERIDIEM meridiem;
@@ -140,6 +143,7 @@ void inputCambiarMomento(Time* momento){
     }
     cout << endl;
 }
+
 void inputMostrarMomento(Time* momento){
     cout << endl;
     cout << "Ingrese el formato a mostrar" << endl;
@@ -165,7 +169,6 @@ void inputMostrarMomento(Time* momento){
 }
 
 
-// Toma un u_int para forzar que sea positivo, no muestra mensaje
 u_int getUint() {
     while (true) {
         u_int input {};
@@ -176,7 +179,7 @@ u_int getUint() {
             exit(0);
         }   
 
-        // success determina si se devuelve o no el input, lo determina que este dentro del rango y que cin no haya fallado.
+        // Si cin no recibe input invalido, cin es true.
         bool success { std::cin};
 
         // Devuelve cin a un estado no fail() y limpia el resto del input para evitar errores
@@ -194,7 +197,6 @@ u_int getUint() {
     }
 }
 
-// Permite tomar un u_int y toma un valor tope(no inclusivo) para valida la entrada.
 u_int getUint(u_int tope) {
     while (true) {
         u_int input {};
@@ -223,7 +225,6 @@ u_int getUint(u_int tope) {
     }
 }
 
-
 MERIDIEM getMeridiem() {
     while (true)
     {   
@@ -238,7 +239,7 @@ MERIDIEM getMeridiem() {
             exit(0);
         }
 
-        // success determina si se devuelve o no el input, lo determina que este dentro del rango y que cin no haya fallado.
+        // success determina si se devuelve o no el input, lo determina que sea meridiem valido y que cin no haya fallado.
         bool success { std::cin && (input == AM || input == PM)};
 
         // Devuelve cin a un estado no fail() y limpia el resto del input para evitar errores
@@ -255,7 +256,6 @@ MERIDIEM getMeridiem() {
     }
 }
 
-// Cast que solo pasa de un u_int valido, AM o PM, a su equivalente en un enum 
 MERIDIEM castMeridiem(u_int meridiem){
     switch (meridiem) {
         case AM:
@@ -267,8 +267,8 @@ MERIDIEM castMeridiem(u_int meridiem){
     }
 }
 
-// Ignora todos los caracteres posibles, o hasta un \n. Sirve para evitar errores en los que el usuario 
-    // ingresa una secuencia de entrada valida en el primer input, lo que rompe el flujo del programa
+
 void ignoreLine() {
+    // numeric_limits<streamsize>::max() es el maximo largo de input
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
