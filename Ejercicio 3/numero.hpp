@@ -1,16 +1,22 @@
 #pragma once
 
+#include <string>
 class Numero{
-    private:
+    protected:
         int intPart;
         float realPart;
         float imagPart;
     public:
-        virtual int getIntPart() const = 0;
-        virtual float getRealPart() const;
-        virtual float getImagPart() const;
+        int getIntPart() const;
+        float getRealPart() const;
+        float getImagPart() const;
 
-        virtual void setIntPart(int value) = 0;
-        virtual void setRealPart(float value);
-        virtual void setImagPart(float iValue);
+        void setIntPart(int value);
+        void setRealPart(float value);
+        void setImagPart(float iValue);
+
+        virtual std::string toString() const = 0;
+
+        // Usa el metodo toString() para crear una funcion generica que permite usar cout.
+        friend std::ostream& operator<<(std::ostream& os, const Numero& numero);
 };

@@ -3,10 +3,9 @@
 #include "numero.hpp"
 
 #include <iostream>
+#include <format>
 
 class Entero : public Numero{
-    private:
-        int e_value;
     public:
         Entero(int valor = 0);
 
@@ -18,10 +17,14 @@ class Entero : public Numero{
         Entero operator* (const Entero& rhn) const;
         // Devuelve un entero cuyo valor es la division de los operandos
         Entero operator/ (const Entero& rhn) const;
-
-        // Devuelve un ostream con el valor cargado para poder usarlo con cout.
-        friend std::ostream& operator<<(std::ostream& os, const Entero& numero);
         
-        int getIntPart() const override;
-        void setIntPart(int value) override;
+        // Como Entero no tiene parte imaginaria ni real, sus correspondientes metodos se inhabilitan
+
+        float getRealPart() const = delete;
+        float getImagPart() const = delete;
+
+        void setRealPart(float value) = delete;
+        void setImagPart(float iValue) = delete;
+
+        std::string toString() const override;
 };
