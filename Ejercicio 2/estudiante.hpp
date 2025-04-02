@@ -6,7 +6,6 @@
 #include <iomanip> // std::setprecision
 #include <memory>
 
-
 class Curso;
 
 class Estudiante{

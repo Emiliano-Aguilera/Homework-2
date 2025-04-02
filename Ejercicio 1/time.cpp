@@ -1,5 +1,4 @@
 #include "time.hpp"
-#include <iostream>
 
 std::string meridiem_strings[2] = {"a.m.", "p.m."};
 
