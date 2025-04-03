@@ -4,42 +4,38 @@
 Curso::Curso(std::string nombre) {
     c_nombre = nombre;
 }
-// Explicacion: El copy constructor en este caso tiene que copiar los estudiantes inscriptos, y luego inscribir todos los estudiantes a este nuevo curso, 
-// No podemos simplemente copiar el vector de estudiantes porque los estudiantes no tendrian a este nuevo curso dentro de ellos. Ademas de que si desinscribimos
-// a un estudiante de el curso original, tambien se eliminaria de el vector de este nuevo curso. Por lo que debemos duplicar el vector c_estudiantes e iterar
-// sobre todos los estudiantes para añadir el nuevo curso a cada estudiante. Manteniendo que todos apunten al mismo objeto y que los cursos apuntan a los mismos
-// estudiantes.
-Curso::Curso(Curso& curso_a_copiar, std::string nombre) : std::enable_shared_from_this<Curso>() {
+// TODO Explicacion Deep copy de curso, shallow copy del vector:
+Curso::Curso(const Curso& curso_a_copiar, std::string nombre) {
     c_nombre = nombre;
     c_estudiantes = std::vector<std::shared_ptr<Estudiante>>(curso_a_copiar.c_estudiantes);
-}
-
-void Curso::inscribir_estudiantes_copy(){
-    for(auto e : c_estudiantes){
-        e->agregar_curso(weak_from_this(), -1);
+    for (auto e : c_estudiantes) {
+        e->agregar_curso(c_nombre, -1);
     }
 }
 
 void Curso::inscribir_estudiante(std::shared_ptr<Estudiante> estudiante, int nota){
-    if (this->curso_completo()){
+    if (this->curso_completo()) {
         std::cerr << "Curso completo, no se pueden añadir estudiantes" << std::endl;
+    }
+    else if (esta_inscripto(estudiante->get_legajo())) {
+        throw std::invalid_argument("El estudiante ya se encuentra inscripto.");
     }
     else {
         c_estudiantes.push_back(estudiante);
-        estudiante->agregar_curso(weak_from_this(), nota);
+        estudiante->agregar_curso(c_nombre, nota);
     }
 }
 
 void Curso::desinscribir_estudiante(int legajo){
+    // Se podria verificar si se encuentra inscripto, pero eso implicaria duplicar la cantidad de iteraciones.
     for (auto e = c_estudiantes.begin(); e != c_estudiantes.end(); e++) {
         if ((*e)->get_legajo() == legajo){
             c_estudiantes.erase(e);
-            (*e)->eliminar_curso(shared_from_this());
+            (*e)->eliminar_curso(c_nombre);
             break;
         }
     }
 }
-
 
 bool Curso::esta_inscripto(int legajo) const{
     for (auto e = c_estudiantes.begin(); e != c_estudiantes.end(); e++) {
@@ -55,18 +51,22 @@ bool Curso::curso_completo() const{
     return (c_estudiantes.size() == 20);
 }
 
+std::vector<std::shared_ptr<Estudiante>> Curso::get_estudiantes(){
+    return c_estudiantes;
+}
 
 std::string Curso::get_nombre() const {
     return c_nombre;
 }
 
-std::vector<std::shared_ptr<Estudiante>> Curso::get_estudiantes(){
-    return c_estudiantes;
-}
-
 void Curso::set_nombre(std::string nuevo_nombre){
     c_nombre = nuevo_nombre;
 }
+
+std::ostream& operator<<(std::ostream& os, const Curso& curso) {
+    return os << curso.get_nombre();
+}
+
 
 
 void Curso::mostrar_estudiantes(){
@@ -78,6 +78,6 @@ void Curso::mostrar_estudiantes(){
     std::cout << "Estudiantes de " << this->c_nombre << ":" << std::endl;
 
     for (auto e : c_estudiantes){
-        std::cout << (*e.get()) << std::endl;
+        std::cout << "-" << (*e.get()) << std::endl;
     }
 }

@@ -28,28 +28,43 @@ int Estudiante::get_legajo() const{
     return e_legajo;
 }
 
+void Estudiante::mod_nota(std::string nombreCurso, float nota){
+    for (auto i = e_notas.begin(); i != e_notas.end(); i++) {
+        if (i->first == nombreCurso) {
+            i->second = nota;
+            break;
+        } 
+    }
+}
+
 float Estudiante::get_promedio() const{
-    int cant_cursos = e_notas.size();
+    int cant_cursos = 0;
     float suma = 0;
 
+    // Solo suma los cursos que tienen una nota.
     for (auto par : e_notas){
-        suma += par.second;
+        if (par.second >= 0) {
+            suma += par.second;
+            cant_cursos++;
+        }
     }
 
+    // Devuelve el promedio siempre y cuando haya al menos un curso, ya que sino haria division por cero.
     return (cant_cursos > 0) ? (suma / cant_cursos) : -1.0;
 }
 
-void Estudiante::agregar_curso(std::weak_ptr<Curso> curso, int nota){
-    std::pair<std::weak_ptr<Curso>, int> par_curso_nota(curso, nota);
+void Estudiante::agregar_curso(std::string nombreCurso, int nota){
+    std::pair<std::string, int> par_curso_nota(nombreCurso, nota);
     e_notas.push_back(par_curso_nota);
 }
 
-void Estudiante::eliminar_curso(std::weak_ptr<Curso> curso){
-    for (auto c = e_notas.begin(); c != e_notas.end(); c++) {
-        // compara los pointers al curso, dereferenciando el shared_ptr
-        if (c->first.lock() == curso.lock()) {
-            e_notas.erase(c);
-            break;
+void Estudiante::eliminar_curso(std::string nombreCurso) {
+    for (auto i = e_notas.begin(); i != e_notas.end(); ) {
+        if (i->first == nombreCurso) {
+            i = e_notas.erase(i);
+        } 
+        else {
+            ++i;
         }
     }
 }
@@ -76,7 +91,7 @@ void Estudiante::mostrar_cursos() const{
     else {
         std::cout << "Cursos de " << (*this) << ":" << std::endl;
         for(auto c : e_notas){
-            std::cout << "Nota de " << c.first.lock()->get_nombre() << ": " << c.second << std::endl;
+            std::cout << "Nota de " << c.first << ": " << c.second << std::endl;
         }   
         std::cout << std::fixed << std::setprecision(2);
         std::cout << "Promedio: "<< this->get_promedio() << std::endl << std::endl;

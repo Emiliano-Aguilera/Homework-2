@@ -8,7 +8,7 @@
 
 class Estudiante;
 
-class Curso :public std::enable_shared_from_this<Curso> {
+class Curso {
     private:
         std::string c_nombre;
         std::vector<std::shared_ptr<Estudiante>> c_estudiantes;
@@ -16,8 +16,7 @@ class Curso :public std::enable_shared_from_this<Curso> {
         // Constructor
         Curso(std::string nombre);
         // Copy constructor
-        Curso(Curso& curso_a_copiar, std::string nombre="Curso copia");
-        void inscribir_estudiantes_copy();
+        Curso(const Curso& curso_a_copiar, std::string nombre="Curso copia");
 
         // Toma un pointer a estudiante y la nota del curso, para poder insertar el curso en el estudiante
         void inscribir_estudiante(std::shared_ptr<Estudiante> estudiante, int nota);
@@ -38,4 +37,6 @@ class Curso :public std::enable_shared_from_this<Curso> {
         void set_nombre(std::string nuevo_nombre);
         // Devulve el vector de shared ptr a estudiantes
         std::vector<std::shared_ptr<Estudiante>> get_estudiantes();
+
+        friend std::ostream& operator<<(std::ostream& os, const Curso& curso);
 };

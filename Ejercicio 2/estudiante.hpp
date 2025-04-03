@@ -4,7 +4,6 @@
 #include <vector>
 #include <iostream>
 #include <iomanip> // std::setprecision
-#include <memory>
 
 class Curso;
 
@@ -14,8 +13,8 @@ class Estudiante{
         std::string e_apellido;
         // Legajo del estudiante, no se checkea que sea unico.
         int e_legajo;
-        // Vector que contiene pairs que constan de un weak_ptr(curso) y su nota
-        std::vector<std::pair<std::weak_ptr<Curso>, int>> e_notas;
+        // Vector que contiene pairs que constan de nombre del curso y su nota
+        std::vector<std::pair<std::string, int>> e_notas;
     public:
         //Constructor, toma un nombre un apellido y un legajo.
         Estudiante(std::string nombre, std::string apellido, int legajo);
@@ -29,10 +28,12 @@ class Estudiante{
         int get_legajo() const;
         // Calcula el promedio de notas, si no hay cursos, devuelve -1.0
         float get_promedio() const;
+        // Modifica la nota asociada a un curso.
+        void mod_nota(std::string nombreCurso, float nota);
         // Agrega un curso, usa un puntero a curso para poder usar std::pair
-        void agregar_curso(std::weak_ptr<Curso> curso, int nota);
+        void agregar_curso(std::string nombreCurso, int nota);
         // Elimina un curso, usa un puntero a curso.
-        void eliminar_curso(std::weak_ptr<Curso> curso);
+        void eliminar_curso(std::string nombreCurso);
         
         // Devuelve solo el nombre
         std::string get_nombre() const;
@@ -41,6 +42,6 @@ class Estudiante{
         // Concatena nombre y apellido, los devuelve como una sola string
         std::string get_nombre_completo() const;
 
-        // helper functions BORRAR
+        // helper functions TODO BORRAR
         void mostrar_cursos() const;
 };
