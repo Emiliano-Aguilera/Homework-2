@@ -67,8 +67,6 @@ std::ostream& operator<<(std::ostream& os, const Curso& curso) {
     return os << curso.get_nombre();
 }
 
-
-
 void Curso::mostrar_estudiantes(){
     // Ordena el vector de estudiantes. Usa una funcion lambda como comparador que -
     // dereferencia el iterador y el shared_ptr<Estudiante> y usa el operador sobrecargado < de estudiante.

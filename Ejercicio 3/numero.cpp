@@ -1,4 +1,3 @@
-#include "numero.hpp"
 
 // Sobrecarga de operadores
 std::ostream& operator<<(std::ostream& os, const Numero& numero) {

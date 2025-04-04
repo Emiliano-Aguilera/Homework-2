@@ -15,9 +15,6 @@ class Entero : public Numero{
         Entero operator- (const Entero& rhn) const;
         // Devuelve un entero cuyo valor es el producto entre los operandos
         Entero operator* (const Entero& rhn) const;
-        // Devuelve un entero cuyo valor es la division de los operandos
-        Entero operator/ (const Entero& rhn) const;
-        
         // Como Entero no tiene parte imaginaria ni real, sus correspondientes metodos se inhabilitan
 
         float getRealPart() const = delete;
@@ -26,5 +23,5 @@ class Entero : public Numero{
         void setRealPart(float value) = delete;
         void setImagPart(float iValue) = delete;
 
-        std::string toString() const override;
+        std::string toString() const;
 };

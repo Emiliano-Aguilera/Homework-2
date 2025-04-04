@@ -1,59 +1,47 @@
 #include "complejo.hpp"
 
 Complejo::Complejo(float value, float iValue){
-    intPart = static_cast<int>(value);
-    realPart = value - intPart;
+    realPart = value;
     imagPart = iValue;
 }
 
-Complejo Complejo::operator+ (const Complejo& rhn) const {
-    float Value1 = intPart + realPart;
-    float Value2 = rhn.getIntPart() + rhn.getRealPart();
+std::shared_ptr<Numero> Complejo::operator+ (const Complejo& rhn) const {
+    float value = realPart + rhn.getRealPart();
     float iValue = imagPart + rhn.getImagPart(); 
 
-    return Complejo(Value1 + Value2, iValue);
+    return std::make_shared<Complejo>(value, iValue);
 }
 
-Complejo Complejo::operator- (const Complejo& rhn) const {
-    float Value1 = intPart + realPart;
-    float Value2 = rhn.getIntPart() + rhn.getRealPart();
+std::shared_ptr<Numero> Complejo::operator- (const Complejo& rhn) const {
+    float value = realPart - rhn.getRealPart();
+    float iValue = imagPart - rhn.getImagPart();
 
-    float iValue = imagPart - rhn.getImagPart(); 
-
-    return Complejo(Value1 - Value2, iValue);
+    return std::make_shared<Complejo>(value, iValue);
 }
 
-Complejo Complejo::operator* (const Complejo& rhn) const {
-    float Value1 = intPart + realPart;
-    float Value2 = rhn.getIntPart() + rhn.getRealPart();
-
-    float iValue1 = imagPart;
-    float iValue2 = rhn.getImagPart();
-
+std::shared_ptr<Numero> Complejo::operator* (const Complejo& rhn) const {
     // Se crean 2 numeros complejos que contienen el resultado de la distributiva entre complejos.
-    Complejo c1 {Value1 * Value2, Value1 * iValue2};
+    Complejo c1 {realPart * rhn.getRealPart(), realPart * rhn.getImagPart()};
     // El primer parametro se multiplica por menos 1 porque son dos numeros imaginarios.
-    Complejo c2 {(iValue1 * iValue2) * (-1), iValue1 * Value2};
+    Complejo c2 {(imagPart* rhn.getImagPart()) * (-1), imagPart * rhn.getRealPart()};
 
-    return c1 + c2;
+    return make_shared<Complejo>(c1 + c2);
 }
 
-Complejo Complejo::operator/ (const Complejo& rhn) const {
-    Complejo conjRhn(rhn.getIntPart() + rhn.getRealPart(), -(rhn.getImagPart()));
+float Complejo::getRealPart() const {
+    return realPart;
+}
+void Complejo::setRealPart(float value){
+    realPart = value;
+}
 
-    Complejo num = *this * conjRhn;
-    Complejo den = rhn * conjRhn;
-
-    if ((den.getIntPart() + den.getRealPart()) == 0){
-        throw std::invalid_argument("Division by zero.");
-    }
-    
-    float rValue = (num.getIntPart()+num.getRealPart()) / (den.getIntPart() + den.getRealPart());
-    float iValue = num.getImagPart() / (den.getIntPart() + den.getRealPart());
-
-    return Complejo(rValue, iValue);
+float Complejo::getImagPart() const {
+    return imagPart;
+}
+void Complejo::setImagPart(float iValue){
+    imagPart = iValue;
 }
 
 std::string Complejo::toString() const {
-    return std::format("{} {} {}i", (intPart + realPart), (imagPart >= 0) ? '+' : '-', imagPart);
+    return std::format("{} {} {}i", realPart, (imagPart >= 0) ? '+' : '-', imagPart);
 }
