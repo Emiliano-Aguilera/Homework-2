@@ -1,47 +1,42 @@
 #include "complejo.hpp"
 
-Complejo::Complejo(float value, float iValue){
-    realPart = value;
-    imagPart = iValue;
+Complejo::Complejo(double rValue, double iValue){
+    valorReal = rValue;
+    valorImag = iValue;
 }
 
-std::shared_ptr<Numero> Complejo::operator+ (const Complejo& rhn) const {
-    float value = realPart + rhn.getRealPart();
-    float iValue = imagPart + rhn.getImagPart(); 
-
-    return std::make_shared<Complejo>(value, iValue);
+Numero* Complejo::operator+ (const Numero* rhn) const {
+    const Complejo* cast_rhn = dynamic_cast<const Complejo*>(rhn);
+    return new Complejo(valorReal + cast_rhn->getValorReal(), valorImag + cast_rhn->getValorImag());
 }
 
-std::shared_ptr<Numero> Complejo::operator- (const Complejo& rhn) const {
-    float value = realPart - rhn.getRealPart();
-    float iValue = imagPart - rhn.getImagPart();
-
-    return std::make_shared<Complejo>(value, iValue);
+Numero* Complejo::operator- (const Numero* rhn) const {
+    const Complejo* cast_rhn = dynamic_cast<const Complejo*>(rhn);
+    return new Complejo(valorReal - cast_rhn->getValorReal(), valorImag - cast_rhn->getValorImag());
 }
 
-std::shared_ptr<Numero> Complejo::operator* (const Complejo& rhn) const {
-    // Se crean 2 numeros complejos que contienen el resultado de la distributiva entre complejos.
-    Complejo c1 {realPart * rhn.getRealPart(), realPart * rhn.getImagPart()};
-    // El primer parametro se multiplica por menos 1 porque son dos numeros imaginarios.
-    Complejo c2 {(imagPart* rhn.getImagPart()) * (-1), imagPart * rhn.getRealPart()};
+Numero* Complejo::operator* (const Numero* rhn) const {
+    const Complejo* cast_rhn = dynamic_cast<const Complejo*>(rhn);
+    
+    double realA = valorReal;
+    double imagA = valorImag;
+    double realB = cast_rhn->valorReal;
+    double imagB = cast_rhn->valorImag;
 
-    return make_shared<Complejo>(c1 + c2);
-}
+    double resultadoReal = realA * realB - imagA * imagB;
+    double resultadoImag = realA * imagB + imagA * realB;
 
-float Complejo::getRealPart() const {
-    return realPart;
-}
-void Complejo::setRealPart(float value){
-    realPart = value;
-}
-
-float Complejo::getImagPart() const {
-    return imagPart;
-}
-void Complejo::setImagPart(float iValue){
-    imagPart = iValue;
+    return new Complejo(resultadoReal, resultadoImag);
 }
 
 std::string Complejo::toString() const {
-    return std::format("{} {} {}i", realPart, (imagPart >= 0) ? '+' : '-', imagPart);
+    return std::format("{} + {}i", valorReal, valorImag);
+}
+
+double Complejo::getValorReal() const {
+    return valorReal;
+}
+
+double Complejo::getValorImag() const {
+    return valorImag;
 }

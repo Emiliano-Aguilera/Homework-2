@@ -6,17 +6,16 @@
 
 using namespace std;
 
-u_int getUint();
-u_int getUint(u_int range);
+int getInt();
+int getInt(int range);
 
 // Muestra el mensaje de bienvenida
 void mensajeInicial(vector<shared_ptr<Curso>> cursos, vector<shared_ptr<Estudiante>> estudiantes);
 void ignoreLine();
 
 
-// Pregunta c: La relacion entre ambos es de agregacion, ya que curso contiene estudiantes, (el todo)
-// pero la existencia de ambos es independiente, los estudiantes existen a pesar
-// de que no existan cursos y viceversa.
+// Pregunta c: La relacion entre Curso y Estudiante es de agregacion, ya que Curso contiene estudiantes, (el todo)
+// pero la existencia de ambos es independiente, los estudiantes existen a pesar de que no existan cursos y viceversa.
 
 int main(){
     vector<shared_ptr<Curso>> cursos
@@ -27,137 +26,137 @@ int main(){
 
     vector<shared_ptr<Estudiante>> estudiantes
     {
-        make_shared<Estudiante>("Emiliano", "Aguilera", 0000),
-        make_shared<Estudiante>("Tomas", "Perez", 0001)
+        make_shared<Estudiante>("Emiliano", "Aguilera", 0),
+        make_shared<Estudiante>("Tomas", "Perez", 1)
     };
 
     // Estudiante 0 inicia inscripto en matematica.
     cursos.at(0)->inscribir_estudiante(estudiantes.at(0), 9);
-    // Estudiante 1 inicia inscripto en Langua.
+    // Estudiante 1 inicia inscripto en Lengua.
     cursos.at(1)->inscribir_estudiante(estudiantes.at(1), 6);
 
     cout << "Bienvenido al ejercicio 2 del Homework 2" << endl;
 
-    u_int accion;
-    do{
-        mensajeInicial(cursos, estudiantes);
-
-        // Tomar u_int
-        cout << "Eleccion: ";
-        accion = getUint();
-
-        // Actuar en consecuencia
-        switch (accion){
-            case 1:
-            {
-                cout << "Check inscripcion y desincripcion de estudiantes." << endl << endl;
-                cout << "Inscribiendo a " << *estudiantes.at(1) << " en el curso " << *cursos.at(0) << "..." << endl;
-                cursos.at(0)->inscribir_estudiante(estudiantes.at(1), 6);
-
-                cursos.at(0)->mostrar_estudiantes();
-
-                cout << endl;
-
-                cout << "Desinscribiendo a " << *estudiantes.at(1) << " del curso " << *cursos.at(0) << "..." << endl;
-                cursos.at(0)->desinscribir_estudiante(estudiantes.at(1)->get_legajo());
-
-                cursos.at(0)->mostrar_estudiantes();
-                break;
-            }
-            case 2:
-            {
-                cout << "Check inscripcion de estudiante." << endl << endl;
-
-                // Primero se muestran los estudiantes inscriptos a cada curso, para poder verificar.
-                cursos.at(0)->mostrar_estudiantes();
-                cout << endl;
-                cursos.at(1)->mostrar_estudiantes();
-                cout << endl;
-
-                cout << "Test: Legajo 1 (Tomas Perez) esta inscripto en lengua y en matematica:" << endl;
-
-                cout << "* Resultado inscripcion en Lengua: " << boolalpha << cursos.at(1)->esta_inscripto(1) << endl;
-                cout << "* Resultado inscripcion en Matematica: " << boolalpha << cursos.at(0)->esta_inscripto(1) << endl;
-                break;
-            }
-            case 3:
-            {
-                auto prueba = make_shared<Curso>("Curso Prueba");
-
-                cout << "Check curso completo:" << endl;
-                cout << "* Se crea un curso temporal para probar esto." << endl;
-                cout << "* Se checkea el resultado de curso_completo cuando solo tiene un estudiante, lo que devuelve false." << endl;
-                cout << "* Luego se añaden 21 estudiantes, lanza un error de curso completo al intentar añadir el estudiante 21." << endl;
-                cout << "* Fiinalmente se muestra el resultado de curso_completo que da true" << endl << endl;
-
-                cout << "Curso completo: " << boolalpha << prueba->curso_completo() << endl << endl;
-            
-
-                for (int i = 1; i < 22; i++) {
-                    cout << "Inscribiendo estudiante nro " << i << endl;
-
-                    try {
-                        prueba->inscribir_estudiante(make_shared<Estudiante>("Prueba" + to_string(i), "Prueba" + to_string(i), 70+i), -1);
-                    }
-                    catch (const std::invalid_argument& e) {
-                        cerr << e.what() << endl;
-                    } 
-                }
-                cout << endl;
-
-                prueba->mostrar_estudiantes();
-
-                cout << endl;
-
-                cout << "Curso completo: " << boolalpha << prueba->curso_completo() << endl;
-                
-                break;
-            }
-            case 4:
-            {
-                cout << "Check copiar curso:" << endl;
-                
-
-                cout << "Crea una copia del curso 0(Matematica) El nuevo curso va a compartir estudiantes con Matematica,";
-                cout << "pero se va a llamar Biologia y sus alumnos van a tener nota -1" << endl << endl;
-
-                shared_ptr<Curso> copia = make_shared<Curso>(*cursos.at(0).get(), "Biologia");
-                cursos.push_back(copia);
-
-                cout << "Cursos instanciados y sus estudiantes: " << endl;
-                for (auto curso : cursos) {
-                    cout << "* ";
-                    curso->mostrar_estudiantes();
-
+    int accion;
+    try {
+        do{
+            mensajeInicial(cursos, estudiantes);
+    
+            // Tomar int
+            cout << "Eleccion: ";
+            accion = getInt();
+    
+            // Actuar en consecuencia
+            switch (accion){
+                case 1:
+                {
+                    cout << "Check inscripcion y desincripcion de estudiantes." << endl << endl;
+                    cout << "Inscribiendo a " << *estudiantes.at(1) << " en el curso " << *cursos.at(0) << "..." << endl;
+                    cursos.at(0)->inscribir_estudiante(estudiantes.at(1), 6);
+    
+                    cursos.at(0)->mostrar_estudiantes();
+    
                     cout << endl;
+    
+                    cout << "Desinscribiendo a " << *estudiantes.at(1) << " del curso " << *cursos.at(0) << "..." << endl;
+                    cursos.at(0)->desinscribir_estudiante(estudiantes.at(1)->get_legajo());
+    
+                    cursos.at(0)->mostrar_estudiantes();
+                    break;
                 }
-                cout << endl;
+                case 2:
+                {
+                    cout << "Check inscripcion de estudiante." << endl << endl;
+    
+                    // Primero se muestran los estudiantes inscriptos a cada curso, para poder verificar.
+                    cursos.at(0)->mostrar_estudiantes();
+                    cout << endl;
+                    cursos.at(1)->mostrar_estudiantes();
+                    cout << endl;
+    
+                    cout << "Test: Legajo 1 (Tomas Perez) esta inscripto en lengua y en matematica:" << endl;
+    
+                    cout << "* Resultado inscripcion en Lengua: " << boolalpha << cursos.at(1)->esta_inscripto(1) << endl;
+                    cout << "* Resultado inscripcion en Matematica: " << boolalpha << cursos.at(0)->esta_inscripto(1) << endl;
+                    break;
+                }
+                case 3:
+                {
+                    auto prueba = make_shared<Curso>("Curso Prueba");
+    
+                    cout << "Check curso completo:" << endl;
+                    cout << "* Se crea un curso temporal para probar esto." << endl;
+                    cout << "* Se checkea el resultado de curso_completo cuando solo tiene un estudiante, lo que devuelve false." << endl;
+                    cout << "* Luego se añaden 21 estudiantes, lanza un error de curso completo al intentar añadir el estudiante 21." << endl;
+                    cout << "* Finalmente se muestra el resultado de curso_completo que da true" << endl << endl;
+    
+                    cout << "Curso completo: " << boolalpha << prueba->curso_completo() << endl << endl;
                 
-                cout << "Eliminando copia..." << endl;
-                // En este caso cursos.end() siempre va a ser copia, porque acabo de hacer un push_back
-                cursos.erase(cursos.end());
-
-                break;
+    
+                    for (int i = 1; i < 22; i++) {
+                        cout << "Inscribiendo estudiante nro " << i << endl;
+    
+                        try {
+                            prueba->inscribir_estudiante(make_shared<Estudiante>("Prueba" + to_string(i), "Prueba" + to_string(i), 70+i), -1);
+                        }
+                        catch (const std::exception& e) {
+                            cerr << e.what() << endl;
+                        } 
+                    }
+                    cout << endl;
+    
+                    prueba->mostrar_estudiantes();
+    
+                    cout << endl;
+    
+                    cout << "Curso completo: " << boolalpha << prueba->curso_completo() << endl;
+                    
+                    break;
+                }
+                case 4:
+                {
+                    cout << "Check copiar curso:" << endl;
+                    
+    
+                    cout << "Crea una copia del curso 0(Matematica) El nuevo curso va a compartir estudiantes con Matematica,";
+                    cout << "pero se va a llamar Biologia y sus alumnos van a tener nota -1" << endl << endl;
+    
+                    shared_ptr<Curso> copia = make_shared<Curso>(*cursos.at(0).get(), "Biologia");
+                    cursos.push_back(copia);
+    
+                    cout << "Cursos instanciados y sus estudiantes: " << endl;
+                    for (auto curso : cursos) {
+                        cout << "* ";
+                        curso->mostrar_estudiantes();
+    
+                        cout << endl;
+                    }
+                    cout << endl;
+                    
+                    cout << "Eliminando copia..." << endl;
+                    // En este caso el ultimo elemento siempre va a ser copia, porque acabo de hacer un push_back
+                    cursos.pop_back();
+    
+                    break;
+                }
+                default:
+                    return 0;
             }
-            default:
-                return 0;
-        }
-        cout << endl;
-    } while(accion >= 1 && accion <= 5);
+            cout << endl;
+        } while(accion >= 1 && accion <= 5);
+    } catch (const exception& e) {
+        cerr << e.what() << endl;
+    }
+    
 }
 
-u_int getUint() {
+int getInt() {
     while (true) {
-        u_int input {};
+        int input {};
         std::cin >> input;
 
-        // Check si el usuario ingresa EOF, el programa deberia cerrarse
-        if (std::cin.eof()) {
-            exit(0);
-        }   
-
         // Si std::cin no recibe input invalido, std::cin es true.
-        bool success { std::cin};
+        bool success {std::cin && input >= 0};
 
         // Devuelve std::cin a un estado no fail() y limpia el resto del input para evitar errores
         std::cin.clear();
@@ -168,24 +167,19 @@ u_int getUint() {
             return input;
         }
         else {
-            std::cerr << "ERROR: El valor ingresado no es valido, intente de nuevo." << std::endl;
+            std::cerr << "ERROR: El valor ingresado no es valido, debe ser mayor o igual a 0." << std::endl;
             std::cout << ": ";
         }
     }
 }
 
-u_int getUint(u_int range) {
+int getInt(int range) {
     while (true) {
-        u_int input {};
+        int input {};
         std::cin >> input;
 
-        // Check si el usuario ingresa EOF, el programa deberia cerrarse
-        if (std::cin.eof()) {
-            exit(0);
-        }   
-
         // success determina si se devuelve o no el input, lo determina que este dentro del rango y que std::cin no haya fallado.
-        bool success { std::cin && input < range};
+        bool success { std::cin && input < range && input >= 0};
 
         // Devuelve std::cin a un estado no fail() y limpia el resto del input para evitar errores
         std::cin.clear();
@@ -196,7 +190,7 @@ u_int getUint(u_int range) {
             return input;
         }
         else {
-            std::cerr << "ERROR: El valor ingresado no es valido, intente de nuevo." << std::endl;
+            std::cerr << "ERROR: El valor ingresado no es valido, debe ser positivo y menor a " << range << std::endl;
             std::cout << ": ";
         }
     }
@@ -230,6 +224,8 @@ void mensajeInicial(vector<shared_ptr<Curso>> cursos, vector<shared_ptr<Estudian
 }
 
 void ignoreLine() {
-    // numeric_limits<streamsize>::max() es el maximo largo de input
+    if (std::cin.fail()) {
+        std::cin.clear();
+    }
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }

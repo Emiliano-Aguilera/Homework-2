@@ -4,7 +4,9 @@
 Curso::Curso(std::string nombre) {
     c_nombre = nombre;
 }
-// TODO Explicacion Deep copy de curso, shallow copy del vector:
+// La copia de Curso es deep copy a nivel curso, ya que estoy duplicando el vector de estudiantes,
+// por lo que no estoy referenciando al mismo vector. Pero simultaneamente es una shallow copy del
+// vector estudiantes, porque ambos vectores contienen los mismos pointers a los mismos estudiantes. 
 Curso::Curso(const Curso& curso_a_copiar, std::string nombre) {
     c_nombre = nombre;
     c_estudiantes = std::vector<std::shared_ptr<Estudiante>>(curso_a_copiar.c_estudiantes);
@@ -15,7 +17,7 @@ Curso::Curso(const Curso& curso_a_copiar, std::string nombre) {
 
 void Curso::inscribir_estudiante(std::shared_ptr<Estudiante> estudiante, int nota){
     if (this->curso_completo()) {
-        std::cerr << "Curso completo, no se pueden añadir estudiantes" << std::endl;
+        throw std::runtime_error("Curso completo, no se pueden añadir estudiantes");
     }
     else if (esta_inscripto(estudiante->get_legajo())) {
         throw std::invalid_argument("El estudiante ya se encuentra inscripto.");
@@ -27,12 +29,14 @@ void Curso::inscribir_estudiante(std::shared_ptr<Estudiante> estudiante, int not
 }
 
 void Curso::desinscribir_estudiante(int legajo){
-    // Se podria verificar si se encuentra inscripto, pero eso implicaria duplicar la cantidad de iteraciones.
     for (auto e = c_estudiantes.begin(); e != c_estudiantes.end(); e++) {
         if ((*e)->get_legajo() == legajo){
-            c_estudiantes.erase(e);
-            (*e)->eliminar_curso(c_nombre);
+            auto estudiante = *e;
+            estudiante->eliminar_curso(c_nombre);
+            e = c_estudiantes.erase(e);
             break;
+        } else {
+            ++e;
         }
     }
 }
@@ -46,13 +50,8 @@ bool Curso::esta_inscripto(int legajo) const{
     return false;
 }
 
-
 bool Curso::curso_completo() const{
     return (c_estudiantes.size() == 20);
-}
-
-std::vector<std::shared_ptr<Estudiante>> Curso::get_estudiantes(){
-    return c_estudiantes;
 }
 
 std::string Curso::get_nombre() const {
@@ -67,15 +66,18 @@ std::ostream& operator<<(std::ostream& os, const Curso& curso) {
     return os << curso.get_nombre();
 }
 
-void Curso::mostrar_estudiantes(){
+void Curso::mostrar_estudiantes() const{
     // Ordena el vector de estudiantes. Usa una funcion lambda como comparador que -
     // dereferencia el iterador y el shared_ptr<Estudiante> y usa el operador sobrecargado < de estudiante.
-    std::sort(c_estudiantes.begin(), c_estudiantes.end(), 
-        [](auto a, auto b)->bool{return (*a.get() < *b.get());});
+    auto estudiantes_copia = c_estudiantes; // Copia para evitar problemas con el vector al ordenarlo.
+    std::sort(estudiantes_copia.begin(), estudiantes_copia.end(), 
+        [](const std::shared_ptr<Estudiante>& a, const std::shared_ptr<Estudiante>& b) -> bool {
+            return *a < *b;
+        });
 
     std::cout << "Estudiantes de " << this->c_nombre << ":" << std::endl;
 
-    for (auto e : c_estudiantes){
+    for (const auto& e : estudiantes_copia){
         std::cout << "-" << (*e.get()) << std::endl;
     }
 }

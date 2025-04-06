@@ -1,26 +1,29 @@
 #include "entero.hpp"
 
 Entero::Entero(int value){
-    intPart = value;
+    valor = value;
 }
 
-Entero Entero::operator+ (const Entero& rhn) const {
-    return Entero(this->intPart + rhn.intPart);
+Numero* Entero::operator+ (const Numero* rhn) const {
+    const Entero* int_rhn = dynamic_cast<const Entero*>(rhn);
+    return new Entero(valor + int_rhn->getValor());
 }
-Entero Entero::operator- (const Entero& rhn) const {
-    return Entero(this->intPart - rhn.intPart);
-}
-Entero Entero::operator* (const Entero& rhn) const {
-    return Entero(this->intPart * rhn.intPart);
-}
-Entero Entero::operator/ (const Entero& rhn) const {
-    if (rhn.intPart == 0) {
-        throw std::invalid_argument("Division by zero.");
-    }
 
-    return Entero(this->intPart / rhn.intPart);
+Numero* Entero::operator- (const Numero* rhn) const {
+    const Entero* int_rhn = dynamic_cast<const Entero*>(rhn);
+    return new Entero(valor - int_rhn->getValor());
+}
+
+Numero* Entero::operator* (const Numero* rhn) const {
+    const Entero* int_rhn = dynamic_cast<const Entero*>(rhn);
+    return new Entero(valor * int_rhn->getValor());
 }
 
 std::string Entero::toString() const {
-    return std::format("{}", intPart);
+    return std::format("{}", valor);
 }
+
+int Entero::getValor() const {
+    return valor;
+}
+

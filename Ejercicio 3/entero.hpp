@@ -6,22 +6,16 @@
 #include <format>
 
 class Entero : public Numero{
+    private:
+        int valor;
     public:
         Entero(int valor = 0);
 
-        // Devuelve un entero cuyo valor es la suma de los operandos
-        Entero operator+ (const Entero& rhn) const;
-        // Devuelve un entero cuyo valor es la resta de los operandos
-        Entero operator- (const Entero& rhn) const;
-        // Devuelve un entero cuyo valor es el producto entre los operandos
-        Entero operator* (const Entero& rhn) const;
-        // Como Entero no tiene parte imaginaria ni real, sus correspondientes metodos se inhabilitan
+        Numero* operator+ (const Numero* rhn) const override;
+        Numero* operator- (const Numero* rhn) const override;
+        Numero* operator* (const Numero* rhn) const override;
+        
+        std::string toString() const override;
 
-        float getRealPart() const = delete;
-        float getImagPart() const = delete;
-
-        void setRealPart(float value) = delete;
-        void setImagPart(float iValue) = delete;
-
-        std::string toString() const;
+        int getValor() const;
 };

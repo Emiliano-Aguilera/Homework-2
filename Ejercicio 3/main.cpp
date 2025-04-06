@@ -8,88 +8,85 @@ using namespace std;
 
 int main() {
     cout << "Prueba Entero:" << endl;
-    Entero e1(9);
-    Entero e2(87);
-    Entero e3(-1);
+    
+    Numero* e1 = new Entero(9);
+    Numero* e2 = new Entero(87);
+    Numero* e3 = new Entero(-1);
 
-    cout << "Resultado de (e1 + e2) * (e2 - e1)" << endl;
-    cout << "(" << e1 << " + " << e2 << ")" << " * " << "(" << e2 << " - " << e1 << ") = ";
-    cout << (e1 + e2) * (e2 - e1) << endl << endl;
+    cout << "e1: " << e1->toString() << ", e2: " << e2->toString() << ", e3: " << e3->toString() << endl;
 
-    cout << "Resultado de (e1 + e2) / (e1 * e3)" << endl;
-    cout << "(" << e1 << " + " << e2 << ")" << " / " << "(" << e1 << " * " << e3 << ") = ";
-    cout << (e1 + e2) / (e1 * e3) << endl << endl;
+    Numero* suma = *e1 + e2;
+    Numero* resta = *e2 - e1;
+    Numero* producto = *suma * resta; 
 
-    try {
-        cout << "Ejemplo division por cero: ";
-        Entero e4(0);
-        cout << "Resultado de e2 / e4" << endl;
-        cout << e2 << "/" << e4 << " = ";
+    Entero* resultado = dynamic_cast<Entero*>(producto);
 
-        cout << (e2 / e4) << endl;
-    } catch (std::invalid_argument const& error) {
-        cerr << "ERROR: " << error.what() << endl;
-        //return 1; 
-    }
+    cout << "Resultado de (e1 + e2) * (e2 - e1): " << endl
+         << "(" << e1->toString() << " + " << e2->toString() << ") * (" 
+         << e2->toString() << " - " << e1->toString() << ") = " 
+         << resultado->toString() << endl;
 
-
-    cout << "=========================" << endl;
-    cout << "=========================" << endl;
+    delete suma;
+    delete resta;
+    delete producto;
+    
+    delete e1;
+    delete e2;
+    delete e3;
     
     cout << "Prueba Real:" << endl;
-    Real r1(9.8);
-    Real r2(87.1);
-    Real r3(-1.5);
+    Numero* r1 = new Real(9.8);
+    Numero* r2 = new Real(87.1);
+    Numero* r3 = new Real(-1.5);
 
-    cout << "Resultado de (r1 + r2) * (r2 - r1)" << endl;
-    cout << "(" << r1 << " + " << r2 << ")" << " * " << "(" << r2 << " - " << r1 << ") = ";
-    cout << (r1 + r2) * (r2 - r1) << endl << endl;
+    cout << "r1: " << r1->toString() << ", r2: " << r2->toString() << ", r3: " << r3->toString() << endl;
 
-    cout << "Resultado de (r1 + r2) / (r1 * r3)" << endl;
-    cout << "(" << r1 << " + " << r2 << ")" << " / " << "(" << r1 << " * " << r3 << ") = ";
-    cout << (r1 + r2) / (r1 * r3) << endl << endl;
-
-    try {
-        cout << "Ejemplo division por cero: r4 = ";
-        Real r4(0.0);
-
-        cout << "Resultado de r2 / r4" << endl;
-        cout << r2 << " / " << r4 << " = ";
-        cout << (r2 / r4) << endl;
-    } catch (std::invalid_argument const& error) {
-        cerr << "ERROR: " << error.what() << endl;
-        //return 1;
-    }
-
-    cout << "=========================" << endl;
-    cout << "=========================" << endl;
+    Numero* sumaReal = *r1 + r2;
+    Numero* restaReal = *r2 - r1;
+    Numero* productoReal = *sumaReal * restaReal;
+    
+    Real* resultadoReal = dynamic_cast<Real*>(productoReal);
+    
+    cout << "Resultado de (r1 + r2) * (r2 - r1): " << endl 
+         << "(" << r1->toString() << " + " << r2->toString() << ") * (" 
+         << r2->toString() << " - " << r1->toString() << ") = " 
+         << resultadoReal->toString() << endl;
+    
+    delete sumaReal;
+    delete restaReal;
+    delete productoReal;
+    
+    delete r1;
+    delete r2;
+    delete r3;
     
     cout << "Prueba Complejo:" << endl;
-    Complejo c1(9.8, -500.8);
-    Complejo c2(87.1, 7.4);
-    Complejo c3(-1.5, 0);
 
-    cout << "Resultado de (c1 + c2) * (c2 - c1)" << endl;
-    cout << "(" << c1 << " + " << c2 << ")" << " * " << "(" << c2 << " - " << c1 << ") = ";
-    cout << (c1 + c2) * (c2 - c1) << endl << endl;
+    Numero* c1 = new Complejo(9.8, -500.8);
+    Numero* c2 = new Complejo(87.1, 7.4);
+    Numero* c3 = new Complejo(-1.5, 0);
 
-    cout << "Resultado de (c1 + c2) / (c1 * c3)" << endl;
-    cout << "(" << c1 << " + " << c2 << ")" << " / " << "(" << c1 << " * " << c3 << ") = ";
-    cout << (c1 + c2) / (c1 * c3) << endl << endl;
+    cout << "c1: " << c1->toString() << ", c2: " << c2->toString() << ", c3: " << c3->toString() << endl;
 
-    try {
-        cout << "Ejemplo division por cero: r4 = ";
-        Complejo r4(0.0, 0.0);
+    Numero* sumaComplejo = *c1 + c2;
+    Numero* restaComplejo = *c2 - c1;
+    Numero* productoComplejo = *sumaComplejo * restaComplejo;
+    
+    Complejo* resultadoComplejo = dynamic_cast<Complejo*>(productoComplejo);
+    
+    cout << "Resultado de (c1 + c2) * (c2 - c1): " << endl
+         << "(" << c1->toString() << " + " << c2->toString() << ") * (" 
+         << c2->toString() << " - " << c1->toString() << ") = " 
+         << resultadoComplejo->toString() << endl;
 
-        cout << "Resultado de c2 / r4" << endl;
-        cout << c2 << " / " << r4 << " = ";
-        cout << (c2 / r4) << endl;
-    } catch (std::invalid_argument const& error) {
-        cerr << "ERROR: " << error.what() << endl;
-        //return 1; deshabilitado, pero seria el comportamiento correcto.
-    }
-
+    delete sumaComplejo;
+    delete restaComplejo;
+    delete productoComplejo;
+    
+    delete c1;
+    delete c2;
+    delete c3;
+    
     cout << endl << "Fin pruebas." << endl;
-
     return 0;
 }

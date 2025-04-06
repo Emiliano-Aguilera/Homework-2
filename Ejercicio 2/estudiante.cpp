@@ -81,19 +81,3 @@ std::string Estudiante::get_nombre_completo() const{
     std::string nombreCompleto = e_nombre + ' ' + e_apellido;
     return nombreCompleto;
 }
-
-
-//Funcion Helper BORRAR
-void Estudiante::mostrar_cursos() const{
-    if (e_notas.empty()){
-        std::cout << "No hay cursos" << std::endl;
-    }
-    else {
-        std::cout << "Cursos de " << (*this) << ":" << std::endl;
-        for(auto c : e_notas){
-            std::cout << "Nota de " << c.first << ": " << c.second << std::endl;
-        }   
-        std::cout << std::fixed << std::setprecision(2);
-        std::cout << "Promedio: "<< this->get_promedio() << std::endl << std::endl;
-    }
-}

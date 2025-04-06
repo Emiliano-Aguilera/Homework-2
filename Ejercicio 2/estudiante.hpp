@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include <iomanip> // std::setprecision
+#include <iomanip> // setprecision
 
 class Curso;
 
@@ -41,7 +41,4 @@ class Estudiante{
         std::string get_apellido() const;
         // Concatena nombre y apellido, los devuelve como una sola string
         std::string get_nombre_completo() const;
-
-        // helper functions TODO BORRAR
-        void mostrar_cursos() const;
 };

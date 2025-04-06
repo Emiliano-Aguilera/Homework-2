@@ -29,14 +29,12 @@ class Curso {
         bool curso_completo() const;
         
         // Imprime los estudiantes en orden alfabetico segun su nombre.
-        void mostrar_estudiantes();
+        void mostrar_estudiantes() const;
         
         // Devuelve solo el nombre del curso
         std::string get_nombre() const;
         // Cambia el nombre del curso
         void set_nombre(std::string nuevo_nombre);
-        // Devulve el vector de shared ptr a estudiantes
-        std::vector<std::shared_ptr<Estudiante>> get_estudiantes();
 
         friend std::ostream& operator<<(std::ostream& os, const Curso& curso);
 };
