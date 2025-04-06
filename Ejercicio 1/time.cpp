@@ -1,4 +1,5 @@
 #include "time.hpp"
+#include <iomanip> // Include iomanip for formatting
 
 const std::string meridiem_strings[2] = {"a.m.", "p.m."};
 
@@ -71,14 +72,22 @@ MERIDIEM Time::get_meridiem(){
     return t_meridiem;
 }
 
-// Imprime en formato 12 horas, no tiene logica.
+// Imprime en formato 12 horas, con formato consistente.
 void Time::print_formato12() {
     int horas12 = (t_horas == 0) ? 12 : t_horas; // Adjust 0 to 12 for 12-hour format
-    std::cout << "Momento: " << horas12 << "h, " << t_minutos << "m, " << t_segundos << "s " << meridiem_strings[t_meridiem] << std::endl;
+    std::cout << "Momento: " 
+              << std::setw(2) << std::setfill('0') << horas12 << "h, "
+              << std::setw(2) << std::setfill('0') << t_minutos << "m, "
+              << std::setw(2) << std::setfill('0') << t_segundos << "s "
+              << meridiem_strings[t_meridiem] << std::endl;
 }
 
-// Cuando meridiem es AM, el printeo no implica ningun calculo, cuando es PM se le suma 12 a las horas
+// Imprime en formato 24 horas, con formato consistente.
 void Time::print_formato24() {
     int horas24 = (t_horas == 12 && t_meridiem == AM) ? 0 : (t_horas + (t_meridiem == PM ? 12 : 0));
-    std::cout << "Momento: " << horas24 << "h, " << t_minutos << "m, " << t_segundos << "s " << std::endl;
+    std::cout << "Momento: " 
+              << std::setw(2) << std::setfill('0') << horas24 << "h, "
+              << std::setw(2) << std::setfill('0') << t_minutos << "m, "
+              << std::setw(2) << std::setfill('0') << t_segundos << "s "
+              << std::endl;
 }
